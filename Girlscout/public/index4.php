@@ -1,15 +1,17 @@
-<?php 
+<?php
 // Include the ShoppingCart class.  Since the session contains a
 // ShoppingCard object, this must be done before session_start().
 require "../application/cart.php";
 session_start();
 print_r($_SESSION);
+
+
 echo "<br>after starting a session in index4. . .";
 ?>
 
 <!DOCTYPE html>
 
-<?php 
+<?php
 // If this session is just beginning, store an empty ShoppingCart in it.
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = new ShoppingCart();
@@ -52,7 +54,7 @@ if ($_POST["variety"]) {
 function updateImage () {
     var menu = document.getElementById("variety");
     var cookieImage = document.getElementById("cookieImage");
-    cookieImage.src = 
+    cookieImage.src =
         'cookies/' + menu.options[menu.options.selectedIndex].value + '.jpg';
 }
 
@@ -97,7 +99,7 @@ Thank you!</p>
 
   <tr><td><!-- Any time the selection changes, update the image and clear the message. -->
           <select id="variety" name="variety" onchange="updateImage(); clearMessage();">
-<?php 
+<?php
             // We generate the options using information from the ShoppingCart class.
             foreach (ShoppingCart::$cookieTypes as $key => $displayName) {
                 echo "<option id=\"$key\" value=\"$key\">$displayName</option>";
