@@ -5,7 +5,7 @@ require "../application/cart.php";
 session_start();
 print_r($_SESSION);
 echo "<br>after starting a session in viewcart...";
-print_r($_POST);
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ if (!isset($_SESSION['cart'])) {
 
 <h2>Girl Scout Cookie Shopping Cart</h2>
 
-<table id="cartTable">
+<!-- <table >
   <tr>
     <th>Image</th>
     <th>Cookie</th>
@@ -37,32 +37,79 @@ if (!isset($_SESSION['cart'])) {
     <th>Total Price</th>
     <th>Edit</th>
   </tr>
-</table>
+</table> -->
 
 <p><?php
 
-if (isset($_SESSION['cart'])) {
-    $c = count($_SESSION['cart']);
-    for ($x=0; $x <= $c; $x++){
-        echo '<tr><td>'.$_SESSION['cart']['itemID'].'</td>';
-        echo '<td>'.$_SESSION['cart']['itemID']['quantity'].'</td>';
-        $x++;
+
+function makeCart() {
+$cart = $_SESSION['cart'];
+$order = $cart->order;
+$valCount = count($order);
+
+if ($valCount == 0) {
+  echo "<strong>Your cart is empty.
+  Please buy some cookies!</strong>";
+}
+
+else {
+  // initialize the table and add headers.
+  echo "<table>";
+  echo "<tr>
+          <th>Image</th>
+          <th>Cookie</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total Price</th>
+          <th>Edit</th>
+        </tr>";
+
+  foreach (ShoppingCart::$cookieTypes as $key => $displayName) {
+    // Iterate over rows
+    if (array_key_exists($key, $order)) {
+      echo "<tr>";
+
+      // create array with cookie info
+      $cookieInfo = Array (1,2,3,4,5,6);
+      for ($count = 0; $count < 6; $count++) {
+          echo "<td>";
+          echo $cookieInfo[$count];
+          echo "</td>";
+      }
+      echo "</tr>";
+
+
+
+      // echo $displayName .": ";
+      // echo $order[$key] . " ";
+      echo "<br />";
+      }
     }
+    echo "</table>";
+  }
+
+
+// $rows = 10; // amout of tr
+// $cols = 10;// amjount of td
+// echo "<table border='1'>";
+//
+// for($tr=1;$tr<=$rows;$tr++){
+//
+//     echo "<tr>";
+//         for($td=1;$td<=$cols;$td++){
+//                echo "<td align='center'>".$tr*$td."</td>";
+//         }
+//     echo "</tr>";
+// }
+// echo "</table>";
+
+
 }
 
 
-
-    // foreach($_SESSION['cart'] as $item) {
-    //     // Define cart variables
-    //       $item_price = $item['product_price'];
-    //       $item_quantity = $item['product_quantity'];
-    //       $item_total_cost = $item_price * $item_quantity;
-    //       $checkout_cart_subtotal += $item_total_cost;
-    //   }
+makeCart();
 
 
-// Poor man's display of shopping cart
-$_SESSION['cart']->display();
 ?></p>
 
 <p><a href="index4.php">Resume shopping</a></p>
