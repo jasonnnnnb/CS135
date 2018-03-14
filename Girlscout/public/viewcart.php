@@ -84,9 +84,8 @@ else {
         // Add Edit
         echo "<td>";
         echo "<input type='number' min='0' max='99999'/>";
-        echo "<button onClick = 'deleteItem()'>
-              Delete
-              </button>";
+        @TODO;
+        echo "<button>Delete</button>";
         echo "</td>";
       echo "</tr>";
 
