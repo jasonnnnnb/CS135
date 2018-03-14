@@ -41,7 +41,7 @@ if ($_POST["variety"]) {
     }
 }
 
-?>
+?> 
 
 <html lang="en">
 
