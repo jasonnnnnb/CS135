@@ -37,6 +37,9 @@ $cart = $_SESSION['cart'];
 $order = $cart->order;
 $valCount = count($order);
 $totalOrder = 0;
+$variety = trim($_POST["variety"]);
+$quantity = trim($_POST["quantity"]);
+
 
 if ($valCount == 0) {
   echo "<strong>Your cart is empty.
@@ -110,19 +113,22 @@ else {
   // $variety = trim($_POST["cookie"]);
   // $quantity = trim($_POST["quantity"]);
 
-  if ($_POST[thinmints]) {
-    // $displayName = ShoppingCart::$cookieTypes[$variety];
-    // $_SESSION['cart']->order($variety, $quantity);
-    unset($_SESSION['cart']->order[thinmints]);
-    echo "alert('hi')";
-  }
+  // if ($_POST[thinmints]) {
+  //   // $displayName = ShoppingCart::$cookieTypes[$variety];
+  //   // $_SESSION['cart']->order($variety, $quantity);
+  //   unset($_SESSION['cart']->order[thinmints]);
+  //   echo "alert('hi')";
+  // }
 
 
 } //end makeCart()
 
 makeCart();
 
-// unset($_SESSION['cart']->order[thinmint]);
+if ($_POST["variety"]) {
+  $displayName = ShoppingCart::$cookieTypes[$variety];
+  unset($_SESSION['cart']->order);
+}
 
 ?></p>
 
