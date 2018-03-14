@@ -4,6 +4,8 @@
 require "../application/cart.php";
 session_start();
 print_r($_SESSION);
+echo "<br />";
+print_r($_POST);
 
 
 echo "<br>after starting a session in index4. . .";
@@ -41,7 +43,7 @@ if ($_POST["variety"]) {
     }
 }
 
-?> 
+?>
 
 <html lang="en">
 

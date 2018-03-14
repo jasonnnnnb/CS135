@@ -4,6 +4,8 @@
 require "../application/cart.php";
 session_start();
 print_r($_SESSION);
+echo "<br>";
+print_r($_POST);
 echo "<br>after starting a session in viewcart...";
 
 ?>
@@ -28,17 +30,9 @@ if (!isset($_SESSION['cart'])) {
 
 <h2>Girl Scout Cookie Shopping Cart</h2>
 
-<script language="javascript">
-  function deleteItem(cookie) {
-    // console.log(cookie);
-    // delete cookie;
-    // location.reload();
-
-  }
-</script>
-
 <p><?php
 
+function makeCart() {
 $cart = $_SESSION['cart'];
 $order = $cart->order;
 $valCount = count($order);
@@ -87,7 +81,8 @@ else {
           // input new amount
           echo "<input type='number' min='0' max='99999'/>";
           // delete
-          echo "<button type='submit'>Delete</button>";
+          echo "<button type='submit' name = '$cookie' value='0'>
+                Delete</button>";
         echo "</form>";
         echo "</td>";
       echo "</tr>";
@@ -112,6 +107,23 @@ else {
     echo "</table>";
   }
 
+  // $variety = trim($_POST["cookie"]);
+  // $quantity = trim($_POST["quantity"]);
+
+  if ($_POST[thinmints]) {
+    // $displayName = ShoppingCart::$cookieTypes[$variety];
+    // $_SESSION['cart']->order($variety, $quantity);
+    unset($_SESSION['cart']->order[thinmints]);
+    echo "alert('hi')";
+  }
+
+
+} //end makeCart()
+
+makeCart();
+
+// unset($_SESSION['cart']->order[thinmint]);
+
 ?></p>
 
 <p><a href="index4.php">Resume shopping</a></p>
@@ -120,3 +132,4 @@ else {
 
 </body>
 </html>
+<!-- https://www.w3schools.com/php/php_form_complete.asp -->
