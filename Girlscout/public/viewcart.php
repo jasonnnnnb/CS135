@@ -81,11 +81,14 @@ else {
         echo "<td>";
         echo "$" . $order[$cookie] * 5;
         echo "</td>";
-        // Add Edit
+        // Add Edit and Delete
         echo "<td>";
-        echo "<input type='number' min='0' max='99999'/>";
-        @TODO;
-        echo "<button>Delete</button>";
+        echo "<form method='post'>";
+          // input new amount
+          echo "<input type='number' min='0' max='99999'/>";
+          // delete
+          echo "<button type='submit'>Delete</button>";
+        echo "</form>";
         echo "</td>";
       echo "</tr>";
 
