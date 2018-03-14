@@ -28,24 +28,21 @@ if (!isset($_SESSION['cart'])) {
 
 <h2>Girl Scout Cookie Shopping Cart</h2>
 
-<!-- <table >
-  <tr>
-    <th>Image</th>
-    <th>Cookie</th>
-    <th>Quantity</th>
-    <th>Unit Price</th>
-    <th>Total Price</th>
-    <th>Edit</th>
-  </tr>
-</table> -->
+<script language="javascript">
+  function deleteItem(cookie) {
+    // console.log(cookie);
+    // delete cookie;
+    // location.reload();
+
+  }
+</script>
 
 <p><?php
 
-
-function makeCart() {
 $cart = $_SESSION['cart'];
 $order = $cart->order;
 $valCount = count($order);
+$totalOrder = 0;
 
 if ($valCount == 0) {
   echo "<strong>Your cart is empty.
@@ -56,59 +53,62 @@ else {
   // initialize the table and add headers.
   echo "<table>";
   echo "<tr>
-          <th>Image</th>
+          <th></th>
           <th>Cookie</th>
           <th>Quantity</th>
-          <th>Unit Price</th>
-          <th>Total Price</th>
+          <th>Price</th>
           <th>Edit</th>
         </tr>";
 
-  foreach (ShoppingCart::$cookieTypes as $key => $displayName) {
+  foreach (ShoppingCart::$cookieTypes as $cookie => $displayName) {
     // Iterate over rows
-    if (array_key_exists($key, $order)) {
+    if (array_key_exists($cookie, $order)) {
       echo "<tr>";
-
-      // create array with cookie info
-      $cookieInfo = Array (1,2,3,4,5,6);
-      for ($count = 0; $count < 6; $count++) {
-          echo "<td>";
-          echo $cookieInfo[$count];
-          echo "</td>";
-      }
+        // Add image
+        echo "<td>";
+        $imgSrc = "cookies/" . $cookie . ".jpg";
+        echo "<img src = $imgSrc />";
+        echo "</td>";
+      // Add name
+        echo "<td>";
+        echo $displayName;
+        echo "</td>";
+        // Add quantity
+        echo "<td>";
+        echo $order[$cookie];
+        echo "</td>";
+        // Add Total Price
+        echo "<td>";
+        echo "$" . $order[$cookie] * 5;
+        echo "</td>";
+        // Add Edit
+        echo "<td>";
+        echo "<input type='number' min='0' max='99999'/>";
+        echo "<button onClick = 'deleteItem()'>
+              Delete
+              </button>";
+        echo "</td>";
       echo "</tr>";
 
-
-
-      // echo $displayName .": ";
-      // echo $order[$key] . " ";
-      echo "<br />";
+      // Update $totalOrder
+      $totalOrder += $order[$cookie];
       }
+      echo "</tr>";
     }
+    // Total
+    echo "<tr>";
+      echo "<td></td>";
+      echo "<td><strong>Total</strong></td>";
+    // Total Quantity
+    echo "<td>$totalOrder</td>";
+    // Total price
+    echo "<td>"."$".($totalOrder * 5)."</td>";
+    // update
+    echo "<td><button>Update</button></td>";
+
+    echo "</tr>";
     echo "</table>";
   }
-
-
-// $rows = 10; // amout of tr
-// $cols = 10;// amjount of td
-// echo "<table border='1'>";
-//
-// for($tr=1;$tr<=$rows;$tr++){
-//
-//     echo "<tr>";
-//         for($td=1;$td<=$cols;$td++){
-//                echo "<td align='center'>".$tr*$td."</td>";
-//         }
-//     echo "</tr>";
-// }
-// echo "</table>";
-
-
-}
-
-
-makeCart();
-
 
 ?></p>
 
