@@ -25,20 +25,23 @@ if (!isset($_SESSION['cart'])) {
 
 <h2>Checkout</h2>
 
-<p>Here is your order: <?php
-
+<p>
+<?php
 $cart = $_SESSION['cart'];
 $order = $cart->order;
 $valCount = count($order);
 $totalOrder = 0;
 
 if ($valCount == 0) {
-  echo "<br /><br /><strong>Your cart is empty.
-  There is nothing to purchase.</strong>";
+  echo "<br /><br />
+  <strong>
+  <h4 id='emptyCart'>Your cart is empty.
+  There is nothing to purchase</h4></strong>";
 }
 
 else {
   // initialize the table and add headers.
+  echo "Here is your order:";
   echo "<table>";
   echo "<tr>
           <th>Cookie</th>
@@ -90,7 +93,8 @@ session_destroy();
 ?></p>
 
 <!-- Create HTML Form -->
-<form method="post">
+
+<form id = "form" method="post">
   <strong>Shipping Info</strong><br />
   <p>
   Name: <input type="text" name="name" value="<?php echo $name;?>"></span><br><br>
@@ -116,7 +120,19 @@ session_destroy();
     echo 3;
   }
 ?>
-<p>Your credit card will be billed.  Thanks for the order!</p>
+<p id="paid">Your credit card will be billed.  Thanks for the order!</p>
+
+<?php
+  if ($valCount == 0) {
+    echo "<script type='text/javascript'>
+          document.getElementById('paid').style.display = 'none';
+          </script>";
+    echo "<script type='text/javascript'>
+          document.getElementById('form').style.display = 'none';
+          </script>";
+
+  }
+?>
 
 <p><a href="index4.php">Shop some more!</a></p>
 
