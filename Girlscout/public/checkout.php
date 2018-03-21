@@ -8,6 +8,10 @@ print_r($_POST);
 
 <!DOCTYPE html>
 
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
 <?php
 // If this session is just beginning, store an empty ShoppingCart in it.
 if (!isset($_SESSION['cart'])) {
@@ -86,30 +90,48 @@ else {
     echo "</table>";
   }
 
-// Poor man's display of shopping cart
-// $_SESSION['cart']->display();
-session_unset();  // remove all session variables
-session_destroy();
 ?></p>
 
 <!-- Create HTML Form -->
 
-<form id = "form" method="post">
+<form id="form" method="post" onsubmit="revalidate()">
   <strong>Shipping Info</strong><br />
-  <p>
-  Name: <input type="text" name="name" value="<?php echo $name;?>"></span><br><br>
-  Street address: <input type="text" name="streetaddress"
-                value="<?php echo $name;?>"></span><br><br>
-  City: <input type="text" name="city" value="<?php echo $name;?>"></span><br><br>
-  State: <input type="text" name="state" value="<?php echo $name;?>"></span><br><br>
-  Zipcode: <input type="number" min='11111' max="99999" name="zipcode" value="<?php echo $name;?>"></span><br><br>
-  Email: <input type="email" name="email" value="<?php echo $name;?>"></span><br><br>
-  Phone: <input type="tel" name="name" value="<?php echo $name;?>"></span><br><br>
+  <p style="line-height:25px;">
+
+    <legend for="firstname">First name:
+    <input type="text" id = "firstname" name="firstname" value=""> </legend>
+
+    <legend for="lastname">Last name:
+    <input type="text" id = "lastname" name="lastname" value=""> </legend>
+
+    <legend for="street">Street Address:
+    <input type="text" id = "street" name="street" value=""> </legend>
+
+    <legend for="city">City:
+    <input type="text" id = "city" name="city" value=""> </legend>
+
+    <legend for="state">State:
+    <input type="text" id = "state" name="state" value=""> </legend>
+
+    <legend for="zipcode">Zipcode:
+    <input type="number" id = "zipcode" name="zipcode" value=""
+            min='11111' max='99999'> </legend>
+
+    <legend for="phone">Phone number:
+    <input type="tel" id = "phone" name="phone" value=""> </legend>
+
+    <legend for="email">Email:
+    <input type="email" name="email" id = "email" value=""> </legend>
+
 </p>
 <p>
   <strong>Girl Scout Info</strong><br />
-  Scout name: <input type="text" name="scoutname"/>
-  Troop name: <input type="text" name="troopname" />
+  <legend for="scout">Scout Name:
+  <input type="text" name="scoutname" id = "scoutname" value=""> </legend>
+
+  <legend for="troop">Scout Troop:
+  <input type="text" name="troop" id = "troop" value=""> </legend>
+
 </p>
 
 <button type="submit" value="submitOrder">Submit Order</button>
@@ -133,6 +155,129 @@ session_destroy();
 
   }
 ?>
+
+<!-- JS validation. client side  -->
+
+<script type='text/javascript'>
+
+var validateField = function(fieldElem, infoMessage, validateFn) {
+  // Add the span if there already isnt one
+  if ($(fieldElem).next().length === 0) {
+    $(fieldElem).after("<span>" + infoMessage + "<span>");
+  }
+
+  // Default hidden
+  $(fieldElem).siblings().hide();
+
+  // Change class to info while editing
+  $(fieldElem).on("keyup", (function() {
+    console.log("editing");
+    $(fieldElem).siblings().text(infoMessage);
+    $(fieldElem).siblings().removeClass();
+    $(fieldElem).siblings().addClass("info");
+
+  }))
+  // If element doesnt validate
+  if (validateFn == false) {
+    console.log("Does not validate");
+    $(fieldElem).siblings().text("Error");
+    $(fieldElem).siblings().show();
+    $(fieldElem).siblings().removeClass();
+    $(fieldElem).siblings().addClass("error");
+  }
+  // If element doesnt is empty
+  if ($(fieldElem).val().length === 0 ) {
+   $(fieldElem).siblings().hide();
+   $(fieldElem).siblings().removeClass();
+ }
+ // If element does validate
+  if (validateFn == true) {
+    console.log("Does validate");
+    $(fieldElem).siblings().text("Okay");
+    $(fieldElem).siblings().show();
+    $(fieldElem).siblings().removeClass();
+    $(fieldElem).siblings().addClass("ok");
+}
+};
+
+$(document).ready(function() {
+  // Validate every field
+  $("#firstname").on("blur", (function() {validateField($(this), "Alphabet only",
+    validateName($("#firstname").val()))
+  }));
+  $("#lastname").on("blur", (function() {validateField($(this), "Alphabet only",
+    validateName($("#lastname").val()))
+  }));
+  $("#city").on("blur", (function() {validateField($(this), "Alphabet only",
+    validateName($("#city").val()))
+  }));
+  $("#state").on("blur", (function() {validateField($(this), "Alphabet only",
+    validateName($("#state").val()))
+  }));
+  $("#phone").on("blur", (function() {validateField($(this), "Number must be in XXX-XXX-XXXX format",
+    validateNumber($("#phone").val()))
+  }));
+  $("#email").on("blur", (function() {validateField($(this), "Use standard email format",
+    validateEmail($("#email").val()))
+  }));
+  $("#street").on("blur", (function() {validateField($(this), "Use standard address form",
+    validateAddr($("#street").val()))
+  }));
+  $("#scoutname").on("blur", (function() {validateField($(this), "Alphabet only",
+    validateName($("#scoutname").val()))
+  }));
+  $("#troop").on("blur", (function() {validateField($(this), "Alphabet only",
+    validateName($("#troop").val()))
+  }));
+  $("#zipcode").on("blur", (function() {validateField($(this), "Enter a correct zip",
+    validateZip($("#zipcode").val()))
+  }));
+
+
+});
+// Validation functions for element e:
+
+// Name must be alphabetic
+function validateName(e) {
+  var re = /^[a-zA-Z]+$/;
+  return re.test(e);
+}
+// Phone number must be in form xxx-xxx-xxxx
+function validateNumber(e) {
+  var re = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+  return re.test(e);
+}
+// Password must be alphanumeric with at least 1 number
+ function validatePassword(e) {
+  var re = /(?=.*[0-9])[a-zA-Z]/;
+  return re.test(e);
+}
+// Email must be in form xxx@xxxxx.xxx
+var validateEmail = function (e) {
+  var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  return re.test(e);
+}
+var validateAddr = function (e) {
+  var re = /^\d+\s[A-z]+\s[A-z]+$/
+  return re.test(e);
+}
+var validateZip = function (e) {
+  var re = /^\d{5}(?:[-\s]\d{4})?$/
+  return re.test(e);
+}
+
+// Call on submit. Validates checkbox and radio selection, and
+// makes sure all other fields are of class ok
+function revalidate() {
+    if ($(".ok").size() != 10) {
+      alert("Please fill in every box and fix mistakes.");
+    }
+    else {
+      alert ("Submitted!");
+    }
+}
+
+</script>
 
 <p><a href="index4.php">Shop some more!</a></p>
 
