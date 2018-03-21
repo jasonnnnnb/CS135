@@ -37,10 +37,9 @@ $valCount = count($order);
 $totalOrder = 0;
 
 if ($valCount == 0) {
-  echo "<br /><br />
-  <strong>
+  echo "<strong>
   <h4 id='emptyCart'>Your cart is empty.
-  There is nothing to purchase</h4></strong>";
+  There is nothing to purchase.</h4></strong>";
 }
 
 else {
@@ -89,7 +88,6 @@ else {
     echo "</tr>";
     echo "</table>";
   }
-
 ?></p>
 
 <!-- Create HTML Form -->
@@ -118,7 +116,7 @@ else {
             min='11111' max='99999'> </legend>
 
     <legend for="phone">Phone number:
-    <input type="tel" id = "phone" name="phone" value=""> </legend>
+    <input type="tel" id = "phone" name="phone" value="111-111-1111"> </legend>
 
     <legend for="email">Email:
     <input type="email" name="email" id = "email" value=""> </legend>
@@ -142,7 +140,7 @@ else {
     echo 3;
   }
 ?>
-<p id="paid">Your credit card will be billed.  Thanks for the order!</p>
+<p hidden id="paid">Your credit card will be billed.  Thanks for the order!</p>
 
 <?php
   if ($valCount == 0) {
@@ -150,9 +148,8 @@ else {
           document.getElementById('paid').style.display = 'none';
           </script>";
     echo "<script type='text/javascript'>
-          document.getElementById('form').style.display = 'none';
-          </script>";
-
+      document.getElementById('form').style.display = 'none';
+      </script>";
   }
 ?>
 
@@ -242,9 +239,9 @@ function validateName(e) {
   var re = /^[a-zA-Z]+$/;
   return re.test(e);
 }
-// Phone number must be in form xxx-xxx-xxxx
+// Phone number must be in form xxx-xxx-xxxx or xxxxxxxxxx
 function validateNumber(e) {
-  var re = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+  var re = /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/;
   return re.test(e);
 }
 // Password must be alphanumeric with at least 1 number
@@ -273,7 +270,12 @@ function revalidate() {
       alert("Please fill in every box and fix mistakes.");
     }
     else {
-      alert ("Submitted!");
+      // alert ("Submitted!");
+      <?php echo session_unset(); ?>  // remove all session variables
+      <?php echo session_destroy(); ?>  // remove all session variables
+      // $("#paid").show();
+      // $("#form").hide();
+      <?php echo 45; ?>
     }
 }
 
