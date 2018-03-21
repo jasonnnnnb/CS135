@@ -82,11 +82,11 @@ else {
         echo "<td>";
         echo "<form method='post'>";
           // input new amount
-          echo "<input type='number' min='0' max='99999'/>";
+          echo "<input type='number' min='0' max='99999' name='$cookie'/>";
           // delete
-          echo "<button type='submit' name = '$cookie' value='0'>
+          echo "<button type='submit' name = '$cookie' value='Delete'>
                 Delete</button>";
-        echo "</form>";
+        // echo "</form>";
         echo "</td>";
       echo "</tr>";
 
@@ -104,31 +104,35 @@ else {
     // Total price
     echo "<td>"."$".($totalOrder * 5)."</td>";
     // update
-    echo "<td><button>Update</button></td>";
+    // echo "<form method='post'>";
+    echo "<td><button type='submit'>Update</button></td>";
+    echo "</form>";
 
     echo "</tr>";
     echo "</table>";
   }
+  // Delete
+  foreach (ShoppingCart::$cookieTypes as $cookie => $displayName) {
+    if (isset($_POST[$cookie]) && $_POST[$cookie]=="Delete") {
+      unset($_SESSION['cart']->order[$cookie]);
+      header("Refresh:0");
+  }}
+  // Edit
+  foreach (ShoppingCart::$cookieTypes as $cookie => $displayName) {
+    if (isset($_POST[$cookie]) && is_numeric($_POST[$cookie])) {
+      echo $_SESSION['cart']->order[$cookie] = $_POST[$cookie];
+      header("Refresh:0");
 
-  // $variety = trim($_POST["cookie"]);
-  // $quantity = trim($_POST["quantity"]);
-
-  // if ($_POST[thinmints]) {
-  //   // $displayName = ShoppingCart::$cookieTypes[$variety];
-  //   // $_SESSION['cart']->order($variety, $quantity);
-  //   unset($_SESSION['cart']->order[thinmints]);
-  //   echo "alert('hi')";
-  // }
-
+  }}
 
 } //end makeCart()
 
 makeCart();
 
-if ($_POST["variety"]) {
-  $displayName = ShoppingCart::$cookieTypes[$variety];
-  unset($_SESSION['cart']->order);
-}
+// if ($_POST["variety"]) {
+//   $displayName = ShoppingCart::$cookieTypes[$variety];
+//   unset($_SESSION['cart']->order);
+// }
 
 ?></p>
 

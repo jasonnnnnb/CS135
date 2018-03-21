@@ -3,6 +3,7 @@
 // ShoppingCard object, this must be done before session_start().
 require "../application/cart.php";
 session_start();
+print_r($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +27,6 @@ if (!isset($_SESSION['cart'])) {
 
 <p>Here is your order: <?php
 
-function makeCart() {
 $cart = $_SESSION['cart'];
 $order = $cart->order;
 $valCount = count($order);
@@ -45,6 +45,7 @@ else {
           <th>Quantity</th>
           <th>Price</th>
         </tr>";
+
 
   foreach (ShoppingCart::$cookieTypes as $cookie => $displayName) {
     // Iterate over rows
@@ -81,9 +82,7 @@ else {
     echo "</tr>";
     echo "</table>";
   }
-}
 
-makeCart();
 // Poor man's display of shopping cart
 // $_SESSION['cart']->display();
 session_unset();  // remove all session variables
@@ -104,14 +103,19 @@ session_destroy();
   Phone: <input type="tel" name="name" value="<?php echo $name;?>"></span><br><br>
 </p>
 <p>
-  <strong>Girl Scout info</strong><br />
+  <strong>Girl Scout Info</strong><br />
   Scout name: <input type="text" name="scoutname"/>
   Troop name: <input type="text" name="troopname" />
 </p>
 
-
+<button type="submit" value="submitOrder">Submit Order</button>
 </form>
 
+<?php
+  if(isset($_POST["submitOrder"])) {
+    echo 3;
+  }
+?>
 <p>Your credit card will be billed.  Thanks for the order!</p>
 
 <p><a href="index4.php">Shop some more!</a></p>
