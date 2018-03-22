@@ -125,7 +125,11 @@ Thank you!</p>
 <p><a href="viewcart.php">View your shopping cart</a></p>
 </form>
 
-<p><b>Note:</b> Say you are using Firefox. Open another tab on your browser and see if a session is shared by both tabs within the same browser.  Open another instance of the same browser, i.e., Firefox in this case, and see if the session is shared by both instances.  Now, try a different browser, say Chrome, and see if Chrome and Firefox are sharing the same session.</p>
+<p><b>Note:</b> Say you are using Firefox. Open another tab on
+  your browser and see if a session is shared by both tabs within the same browser.
+  Open another instance of the same browser, i.e., Firefox in this case, and see
+  if the session is shared by both instances.  Now, try a different browser,
+  say Chrome, and see if Chrome and Firefox are sharing the same session.</p>
 
 </body>
 </html>

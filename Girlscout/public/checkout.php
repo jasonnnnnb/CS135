@@ -3,7 +3,11 @@
 // ShoppingCard object, this must be done before session_start().
 require "../application/cart.php";
 session_start();
+echo "post: ";
 print_r($_POST);
+echo "<br />". "Session: ";
+print_r($_SESSION);
+
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +26,7 @@ if (!isset($_SESSION['cart'])) {
 <html lang="en">
 
 <head>
-<title>Checkout</title>
+  <title>Checkout</title>
 </head>
 
 <body>
@@ -30,71 +34,64 @@ if (!isset($_SESSION['cart'])) {
 <h2>Checkout</h2>
 
 <p>
-<?php
-$cart = $_SESSION['cart'];
-$order = $cart->order;
-$valCount = count($order);
-$totalOrder = 0;
+  <?php
+  $cart = $_SESSION['cart'];
+  $order = $cart->order;
+  $valCount = count($order);
+  $totalOrder = 0;
+  echo "valcount ".$valCount."<br />";
 
-if ($valCount == 0) {
-  echo "<strong>
-  <h4 id='emptyCart'>Your cart is empty.
-  There is nothing to purchase.</h4></strong>";
-}
+  if (!$valCount == 0) {
+    // initialize the table and add headers.
+    echo "Here is your order:";
+    echo "<table>";
+    echo "<tr>
+            <th>Cookie</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>";
 
-else {
-  // initialize the table and add headers.
-  echo "Here is your order:";
-  echo "<table>";
-  echo "<tr>
-          <th>Cookie</th>
-          <th>Quantity</th>
-          <th>Price</th>
-        </tr>";
+    foreach (ShoppingCart::$cookieTypes as $cookie => $displayName) {
+      // Iterate over rows
+      if (array_key_exists($cookie, $order)) {
+        echo "<tr>";
+        // Add name
+          echo "<td>";
+          echo $displayName;
+          echo "</td>";
+          // Add quantity
+          echo "<td>";
+          echo $order[$cookie];
+          echo "</td>";
+          // Add Total Price
+          echo "<td>";
+          echo "$" . $order[$cookie] * 5;
+          echo "</td>";
+        echo "</tr>";
 
+        // Update $totalOrder
+        $totalOrder += $order[$cookie];
+        }
+        echo "</tr>";
+      } //end loop
 
-  foreach (ShoppingCart::$cookieTypes as $cookie => $displayName) {
-    // Iterate over rows
-    if (array_key_exists($cookie, $order)) {
+      // Total
       echo "<tr>";
-      // Add name
-        echo "<td>";
-        echo $displayName;
-        echo "</td>";
-        // Add quantity
-        echo "<td>";
-        echo $order[$cookie];
-        echo "</td>";
-        // Add Total Price
-        echo "<td>";
-        echo "$" . $order[$cookie] * 5;
-        echo "</td>";
+        echo "<td><strong>Total</strong></td>";
+      // Total Quantity
+      echo "<td>$totalOrder</td>";
+      // Total price
+      echo "<td>"."$".($totalOrder * 5)."</td>";
+
       echo "</tr>";
-
-      // Update $totalOrder
-      $totalOrder += $order[$cookie];
-      }
-      echo "</tr>";
-    } //end loop
-
-    // Total
-    echo "<tr>";
-      echo "<td><strong>Total</strong></td>";
-    // Total Quantity
-    echo "<td>$totalOrder</td>";
-    // Total price
-    echo "<td>"."$".($totalOrder * 5)."</td>";
-
-    echo "</tr>";
-    echo "</table>";
-  }
+      echo "</table>";
+    }
 ?></p>
 
 <!-- Create HTML Form -->
-
-<form id="form" method="post" onsubmit="revalidate()">
+<form id ="form" method="post" name='orderdata'>
   <strong>Shipping Info</strong><br />
-  <p style="line-height:25px;">
+    <p style="line-height:25px;">
 
     <legend for="firstname">First name:
     <input type="text" id = "firstname" name="firstname" value=""> </legend>
@@ -116,47 +113,24 @@ else {
             min='11111' max='99999'> </legend>
 
     <legend for="phone">Phone number:
-    <input type="tel" id = "phone" name="phone" value="111-111-1111"> </legend>
+    <input type="tel" id = "phone" name="phone" value=""> </legend>
 
     <legend for="email">Email:
     <input type="email" name="email" id = "email" value=""> </legend>
 
-</p>
-<p>
-  <strong>Girl Scout Info</strong><br />
-  <legend for="scout">Scout Name:
-  <input type="text" name="scoutname" id = "scoutname" value=""> </legend>
+    <br />
+    <strong>Girl Scout Info</strong><br />
+    <legend for="scout">Scout Name:
+    <input type="text" name="scoutname" id = "scoutname" value=""> </legend>
 
-  <legend for="troop">Scout Troop:
-  <input type="text" name="troop" id = "troop" value=""> </legend>
-
-</p>
-
-<button type="submit" value="submitOrder">Submit Order</button>
+    <legend for="troop">Scout Troop:
+    <input type="text" name="troop" id = "troop" value=""> </legend>
+    </p>
+    <input type="submit" value="Submit" onclick="return revalidate()"/>
 </form>
 
-<?php
-  if(isset($_POST["submitOrder"])) {
-    echo 3;
-  }
-?>
-<p hidden id="paid">Your credit card will be billed.  Thanks for the order!</p>
-
-<?php
-  if ($valCount == 0) {
-    echo "<script type='text/javascript'>
-          document.getElementById('paid').style.display = 'none';
-          </script>";
-    echo "<script type='text/javascript'>
-      document.getElementById('form').style.display = 'none';
-      </script>";
-  }
-?>
-
 <!-- JS validation. client side  -->
-
 <script type='text/javascript'>
-
 var validateField = function(fieldElem, infoMessage, validateFn) {
   // Add the span if there already isnt one
   if ($(fieldElem).next().length === 0) {
@@ -229,8 +203,6 @@ $(document).ready(function() {
   $("#zipcode").on("blur", (function() {validateField($(this), "Enter a correct zip",
     validateZip($("#zipcode").val()))
   }));
-
-
 });
 // Validation functions for element e:
 
@@ -268,18 +240,34 @@ var validateZip = function (e) {
 function revalidate() {
     if ($(".ok").size() != 10) {
       alert("Please fill in every box and fix mistakes.");
+      return false;
     }
     else {
       // alert ("Submitted!");
-      <?php echo session_unset(); ?>  // remove all session variables
       <?php echo session_destroy(); ?>  // remove all session variables
+      <?php echo session_unset(); ?>  // remove all session variables
       // $("#paid").show();
       // $("#form").hide();
-      <?php echo 45; ?>
     }
 }
-
 </script>
+
+<!-- Handles after submit -->
+<?php
+  $items = ["firstname", "lastname", "street"];
+  $worked = true;
+  foreach ($items as $key) {
+    if (!isset($_POST[$key])) {
+      $worked = false;
+    }
+  if ($worked == true) {
+    // Successfully submitted
+  }
+  }
+
+
+?>
+
 
 <p><a href="index4.php">Shop some more!</a></p>
 
