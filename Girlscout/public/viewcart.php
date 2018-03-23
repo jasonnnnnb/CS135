@@ -129,11 +129,6 @@ else {
 
 makeCart();
 
-// if ($_POST["variety"]) {
-//   $displayName = ShoppingCart::$cookieTypes[$variety];
-//   unset($_SESSION['cart']->order);
-// }
-
 ?></p>
 
 <p><a href="index4.php">Resume shopping</a></p>

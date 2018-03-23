@@ -97,17 +97,21 @@ var validateEmail = function (e) {
   var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return re.test(e);
 }
+// Validates address in 101 apple street
 var validateAddr = function (e) {
   var re = /^\d+\s[A-z]+\s[A-z]+$/
   return re.test(e);
 }
+// Validates zip 11111-99999
 var validateZip = function (e) {
   var re = /^\d{5}(?:[-\s]\d{4})?$/
   return re.test(e);
 }
+// Validates state exists and is only alphabetic
 function validateState(e) {
   var re = /^[a-zA-Z]+$/;
   var test1 = re.test(e);
+  // compare lower case states to lower case input
   var test2 = $.inArray(e.toLowerCase(), statesLower) > -1;
   return test1 && test2;
 }
@@ -135,8 +139,8 @@ var states = Array(
 "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
 "West Virginia", "Wisconsin", "Wyoming");
 
+// Lower case states
 var statesLower = [];
 for (var i = 0; i < states.length; i++) {
   statesLower.push(states[i].toLowerCase());
 }
-console.log(statesLower);
