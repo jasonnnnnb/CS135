@@ -125,8 +125,9 @@ if (!isset($_SESSION['cart'])) {
     <legend for="troop">Scout Troop:
     <input type="text" name="troop" id = "troop" value=""> </legend>
     </p>
-    <input type="button" value="Submit" onclick="revalidate()"/>
+    <button id ="subbutton" onclick="return revalidate()">Place Order</button>
 </form>
+
 <script type='text/javascript'>
   function showHint(str) {
     if (str.length == 0) {
@@ -145,12 +146,14 @@ if (!isset($_SESSION['cart'])) {
     }
   }
 
+  // Activate submit button
 </script>
 
 <!-- Server side validation -->
 <?php
 session_unset();
 session_destroy();
+// echo "working";
   $works = true;
   $items = ["firstname", "lastname", "street", "city", "state", "zipcode",
             "troop", "scoutname", "email", "phone"];
@@ -165,25 +168,24 @@ session_destroy();
         }
     } //end of loop
 verifylen('scoutname', 3);
-if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-  $works = false;
-}
-if (!filter_var($_POST['phone'], FILTER_VALIDATE_REGEXP, array(
-  "options" => array("regexp"=>"/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/")
-))) {
-  $works = false;
-}
-if (!filter_var($_POST['zipcode'], FILTER_VALIDATE_REGEXP, array(
-  "options" => array("regexp"=>"/^\d{5}(?:[-\s]\d{4})?$/")
-))) {
-  $works = false;
-}
-if (!filter_var($_POST['street'], FILTER_VALIDATE_REGEXP, array(
-  "options" => array("regexp"=>"/^\d+\s[A-z]+\s[A-z]+$/")
-))) {
-  $works = false;
-}
-
+// if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+//   $works = false;
+// }
+// if (!filter_var($_POST['phone'], FILTER_VALIDATE_REGEXP, array(
+//   "options" => array("regexp"=>"/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/")
+// ))); {
+//   $works = false;
+// }
+// if (!filter_var($_POST['zipcode'], FILTER_VALIDATE_REGEXP, array(
+//   "options" => array("regexp"=>"/^\d{5}(?:[-\s]\d{4})?$/")
+// ))); {
+//   $works = false;
+// }
+// if (!filter_var($_POST['street'], FILTER_VALIDATE_REGEXP, array(
+//   "options" => array("regexp"=>"/^\d+\s[A-z]+\s[A-z]+$/")
+// ))); {
+//   $works = false;
+// }
 if ($works) {
   echo "<script type='text/javascript'>
   $('#form').hide();

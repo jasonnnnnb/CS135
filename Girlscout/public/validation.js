@@ -118,7 +118,7 @@ function validateState(e) {
 
 // Call on submit. Validates checkbox and radio selection, and
 // makes sure all other fields are of class ok
-function revalidate(state) {
+function revalidate() {
     if ($(".ok").size() != 10) {
       alert("Please fill in every box and fix mistakes.");
       return false;
