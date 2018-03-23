@@ -39,12 +39,11 @@ if (!isset($_SESSION['cart'])) {
   $order = $cart->order;
   $valCount = count($order);
   $totalOrder = 0;
-  echo "valcount ".$valCount."<br />";
 
   if (!$valCount == 0) {
     // initialize the table and add headers.
-    echo "Here is your order:";
-    echo "<table>";
+    echo "<table id = 'ordersum'>";
+    echo "<caption> Here is your order:</caption>";
     echo "<tr>
             <th>Cookie</th>
             <th>Quantity</th>
@@ -87,14 +86,13 @@ if (!isset($_SESSION['cart'])) {
       echo "</table>";
     }
 ?></p>
-
 <!-- Create HTML Form -->
 <form id ="form" method="post" name='orderdata'>
   <strong>Shipping Info</strong><br />
     <p style="line-height:25px;">
 
     <legend for="firstname">First name:
-    <input type="text" id = "firstname" name="firstname" value=""> </legend>
+    <input type="text" id = "firstname" name="firstname"> </legend>
 
     <legend for="lastname">Last name:
     <input type="text" id = "lastname" name="lastname" value=""> </legend>
@@ -126,7 +124,7 @@ if (!isset($_SESSION['cart'])) {
     <legend for="troop">Scout Troop:
     <input type="text" name="troop" id = "troop" value=""> </legend>
     </p>
-    <input type="submit" value="Submit" onclick="return revalidate()"/>
+    <input type="submit" value="Submit" onclick="revalidate()"/>
 </form>
 
 <!-- JS validation. client side  -->
@@ -194,8 +192,8 @@ $(document).ready(function() {
   $("#street").on("blur", (function() {validateField($(this), "Use standard address form",
     validateAddr($("#street").val()))
   }));
-  $("#scoutname").on("blur", (function() {validateField($(this), "Alphabet only",
-    validateName($("#scoutname").val()))
+  $("#scoutname").on("blur", (function() {validateField($(this), "Alphabet only, > 3 chars",
+    validateScout($("#scoutname").val()))
   }));
   $("#troop").on("blur", (function() {validateField($(this), "Alphabet only",
     validateName($("#troop").val()))
@@ -210,6 +208,10 @@ $(document).ready(function() {
 function validateName(e) {
   var re = /^[a-zA-Z]+$/;
   return re.test(e);
+}
+function validateScout(e) {
+  var re = /^[a-zA-Z]+$/;
+  return re.test(e) && e.length > 3;
 }
 // Phone number must be in form xxx-xxx-xxxx or xxxxxxxxxx
 function validateNumber(e) {
@@ -243,33 +245,77 @@ function revalidate() {
       return false;
     }
     else {
-      // alert ("Submitted!");
-      <?php echo session_destroy(); ?>  // remove all session variables
-      <?php echo session_unset(); ?>  // remove all session variables
-      // $("#paid").show();
-      // $("#form").hide();
+      <?php
+      session_unset();
+      session_destroy();
+      ?>
     }
 }
+
 </script>
 
-<!-- Handles after submit -->
-<?php
-  $items = ["firstname", "lastname", "street"];
-  $worked = true;
-  foreach ($items as $key) {
-    if (!isset($_POST[$key])) {
-      $worked = false;
-    }
-  if ($worked == true) {
-    // Successfully submitted
-  }
-  }
 
+<!-- Server side validation -->
+<?php
+
+  $works = true;
+  $items = ["firstname", "lastname", "street", "city", "state", "zipcode",
+            "troop", "scoutname", "email", "phone"];
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    foreach ($items as $key) {
+      if (!isset($_POST[$key])) {
+        $works = false;
+      }
+        else {
+          verifylen($key, 0);
+        }
+    } //end of loop
+verifylen('scoutname', 3);
+if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+  $works = false;
+}
+if (!filter_var($_POST['phone'], FILTER_VALIDATE_REGEXP, array(
+  "options" => array("regexp"=>"/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/")
+))) {
+  $works = false;
+}
+if (!filter_var($_POST['zipcode'], FILTER_VALIDATE_REGEXP, array(
+  "options" => array("regexp"=>"/^\d{5}(?:[-\s]\d{4})?$/")
+))) {
+  $works = false;
+}
+if (!filter_var($_POST['street'], FILTER_VALIDATE_REGEXP, array(
+  "options" => array("regexp"=>"/^\d+\s[A-z]+\s[A-z]+$/")
+))) {
+  $works = false;
+}
+
+if ($works) {
+  echo "<script type='text/javascript'>
+  $('#form').hide();
+  $('#ordersum').hide();
+  </script>";
+
+  echo "<p><big><big>
+  Thanks for shopping!
+  </big></big></p>";
+}
+}
+
+function verifylen($field, $len) {
+  if (strlen($_POST[$field]) <= $len) {
+    echo "<script type='text/javascript'>
+    alert('Make sure ' + $field.name + ' has more than '
+    + $len + ' characters.')
+    </script>";
+    $works = false;
+  }
+}
 
 ?>
-
-
 <p><a href="index4.php">Shop some more!</a></p>
+
 
 </body>
 </html>
