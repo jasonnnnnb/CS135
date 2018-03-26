@@ -168,24 +168,22 @@ session_destroy();
         }
     } //end of loop
 verifylen('scoutname', 3);
-// if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-//   $works = false;
-// }
-// if (!filter_var($_POST['phone'], FILTER_VALIDATE_REGEXP, array(
-//   "options" => array("regexp"=>"/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/")
-// ))); {
-//   $works = false;
-// }
-// if (!filter_var($_POST['zipcode'], FILTER_VALIDATE_REGEXP, array(
-//   "options" => array("regexp"=>"/^\d{5}(?:[-\s]\d{4})?$/")
-// ))); {
-//   $works = false;
-// }
-// if (!filter_var($_POST['street'], FILTER_VALIDATE_REGEXP, array(
-//   "options" => array("regexp"=>"/^\d+\s[A-z]+\s[A-z]+$/")
-// ))); {
-//   $works = false;
-// }
+if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+  echo "1";
+  $works = false;
+}
+if(!preg_match("/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/", $_POST['phone'])) {
+  echo "2.5";
+  $works = false;
+}
+if(!preg_match("/^\d{5}(?:[-\s]\d{4})?$/", $_POST['zipcode'])) {
+  echo "3.5";
+  $works = false;
+}
+if(!preg_match("/^\d+\s[A-z]+\s[A-z]+$/", $_POST['street'])) {
+  echo "4.5";
+  $works = false;
+}
 if ($works) {
   echo "<script type='text/javascript'>
   $('#form').hide();
