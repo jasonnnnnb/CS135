@@ -3,10 +3,12 @@
 // ShoppingCard object, this must be done before session_start().
 require "../application/cart.php";
 require "states.php";
+require '../Backend/dbconn.php';
+require '../Backend/queries.php';
+$connection = connect("gsc");
+require 'queries.php';
 session_start();
-echo "post: ";
 print_r($_POST);
-echo "<br />". "Session: ";
 print_r($_SESSION);
 
 ?>
