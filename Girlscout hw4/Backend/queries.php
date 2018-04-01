@@ -9,4 +9,5 @@ $insertCustomer -> bind_param ("ssssi", $name, $street, $city, $state, $zipcode)
 $query = "SELECT if FROM customer WHERE name=?";
 $selectCustomer = $connection->prepare($query);
 $selectCustomer -> bind_param("s", $name);
+
 ?>

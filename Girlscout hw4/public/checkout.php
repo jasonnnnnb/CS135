@@ -1,16 +1,14 @@
 <?php
 // Include the ShoppingCart class.  Since the session contains a
 // ShoppingCard object, this must be done before session_start().
-require "../application/cart.php";
-require "states.php";
-require '../Backend/dbconn.php';
-require '../Backend/queries.php';
-$connection = connect("gsc");
-require 'queries.php';
-session_start();
-print_r($_POST);
-print_r($_SESSION);
-
+  require "../application/cart.php";
+  require "states.php";
+  require '../Backend/dbconn.php';
+  require '../Backend/queries.php';
+  $connection = connect("GSC");
+  session_start();
+  print_r($_POST);
+  print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -147,7 +145,6 @@ if (!isset($_SESSION['cart'])) {
       xmlhttp.send();
     }
   }
-
   // Activate submit button
 </script>
 
@@ -169,44 +166,45 @@ session_destroy();
           verifylen($key, 0);
         }
     } //end of loop
-verifylen('scoutname', 3);
-if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-  echo "1";
-  $works = false;
-}
-if(!preg_match("/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/", $_POST['phone'])) {
-  echo "2.5";
-  $works = false;
-}
-if(!preg_match("/^\d{5}(?:[-\s]\d{4})?$/", $_POST['zipcode'])) {
-  echo "3.5";
-  $works = false;
-}
-if(!preg_match("/^\d+\s[A-z]+\s[A-z]+$/", $_POST['street'])) {
-  echo "4.5";
-  $works = false;
-}
-if ($works) {
-  echo "<script type='text/javascript'>
-  $('#form').hide();
-  $('#ordersum').hide();
-  </script>";
 
-  echo "<p><big><big>
-  Thanks for shopping!
-  </big></big></p>";
-}
-}
-
-function verifylen($field, $len) {
-  if (strlen($_POST[$field]) <= $len) {
-    echo "<script type='text/javascript'>
-    alert('Make sure ' + $field.name + ' has more than '
-    + $len + ' characters.')
-    </script>";
+// Validation methods
+  verifylen('scoutname', 3);
+  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    echo "1";
     $works = false;
   }
+  if(!preg_match("/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/", $_POST['phone'])) {
+    echo "2.5";
+    $works = false;
+  }
+  if(!preg_match("/^\d{5}(?:[-\s]\d{4})?$/", $_POST['zipcode'])) {
+    echo "3.5";
+    $works = false;
+  }
+  if(!preg_match("/^\d+\s[A-z]+\s[A-z]+$/", $_POST['street'])) {
+    echo "4.5";
+    $works = false;
+  }
+  if ($works) {
+    echo "<script type='text/javascript'>
+    $('#form').hide();
+    $('#ordersum').hide();
+    </script>";
+
+    echo "<p><big><big>
+    Thanks for shopping!
+    </big></big></p>";
+  }
 }
+  function verifylen($field, $len) {
+    if (strlen($_POST[$field]) <= $len) {
+      echo "<script type='text/javascript'>
+      alert('Make sure ' + $field.name + ' has more than '
+      + $len + ' characters.')
+      </script>";
+      $works = false;
+    }
+  }
 
 ?>
 <p><a href="index4.php">Shop some more!</a></p>

@@ -5,6 +5,7 @@ GRANT ALL PRIVILEGES ON GSC.* to jason@localhost IDENTIFIED BY 'jason';
 
 USE GSC;
 
+-- Create the tables
 CREATE TABLE cookies (
   order_id INT UNSIGNED NOT NULL,
   FOREIGN KEY (order_id) REFERNCES orders(id),
@@ -15,15 +16,16 @@ CREATE TABLE cookies (
 
 CREATE TABLE orders (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  cid INT UNSIGNED NOT NULL,
+  customer_id INT UNSIGNED NOT NULL,
   gs_id INT UNSIGNED NOT NULL,
-  FOREIGN KEY (cid) REFERENCES customer(id),
+  FOREIGN KEY (customer_id) REFERENCES customer(id),
   FOREIGN KEY (gs_id) REFERENCES girlscout(gs_id)
 );
 
 CREATE TABLE girlscout (
   gs_id NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  -- ...
+  name NOT NULL VARCHAR(256),
+  troop NOT NULL VARCHAR(256)
 );
 
 CREATE TABLE customer (

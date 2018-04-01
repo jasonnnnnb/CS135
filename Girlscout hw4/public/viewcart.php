@@ -3,10 +3,6 @@
 // ShoppingCard object, this must be done before session_start().
 require "../application/cart.php";
 session_start();
-print_r($_SESSION);
-echo "<br>";
-print_r($_POST);
-echo "<br>after starting a session in viewcart...";
 
 ?>
 
