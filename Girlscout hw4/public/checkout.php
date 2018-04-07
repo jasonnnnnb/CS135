@@ -2,10 +2,12 @@
 // Include the ShoppingCart class.  Since the session contains a
 // ShoppingCard object, this must be done before session_start().
   require "../application/cart.php";
-  require "states.php";
+  require "../Backend/states.php";
   require '../Backend/dbconn.php';
   require '../Backend/queries.php';
-  $connection = connect("GSC");
+
+  $connection = connect_to_db("GSC");
+
   session_start();
   print_r($_POST);
   print_r($_SESSION);
@@ -14,16 +16,31 @@
 <!DOCTYPE html>
 <?php
 // If this session is just beginning, store an empty ShoppingCart in it.
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = new ShoppingCart();
-}
+  if (!isset($_SESSION['cart'])) {
+      $_SESSION['cart'] = new ShoppingCart();
+  }
+
+  mysqli_stmt_execute($selectCustomer);
+  $selectCustomer -> bind_result($customer_id);
+  if ($selectCustomer -> fetch() ) {
+    echo "Your customer ID is $customer_id <br />";
+  }
+  else {
+    mysqli_stmt_execute($insertCustomer);
+    $customer_id = mysqli_stmt_insert_id($insertCustomer);
+    echo "Thanks for being a new customer! Your ID is $customer_id <br />";
+  }
+  mysqli_stmt_close($selectCustomer);
+  mysqli_stmt_close($insertCustomer);
+
 ?>
 
 <html lang="en">
 
 <head>
   <title>Checkout</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+  </script>
   <script src="validation.js"></script>
 
 </head>
@@ -166,6 +183,15 @@ session_destroy();
           verifylen($key, 0);
         }
     } //end of loop
+
+    // Set variables
+    $fname = $_POST['firstname'];
+    $lname = $_POST['lastname'];
+    $street = $_POST['street'];
+    $phone = $_POST['phone'];
+    $street = $_POST['street'];
+    $street = $_POST['street'];
+    $street = $_POST['street'];
 
 // Validation methods
   verifylen('scoutname', 3);
