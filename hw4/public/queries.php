@@ -1,6 +1,5 @@
 <?php
 // PDOStatements
-
 // Insert into cookie
 $query = "INSERT INTO cookies (order_id, variety, quantity, price)
           VALUES (?, ?, ?, ?)";

@@ -18,4 +18,5 @@ function perform_query( $dbc, $query ){
 
 	return $result;
 }
+
 ?>

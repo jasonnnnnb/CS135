@@ -37,4 +37,5 @@ else {
   echo $hint;
 }
 // echo $hint === "" ? "No suggestion" : $hint;
+
 ?>

@@ -1,6 +1,5 @@
 DROP DATABASE IF EXISTS GSC;
 CREATE DATABASE GSC;
-
 USE GSC;
 
 -- Create the tables

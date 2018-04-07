@@ -2,9 +2,8 @@
 // Include the ShoppingCart class.  Since the session contains a
 // ShoppingCard object, this must be done before session_start().
   require "../application/cart.php";
-  require "../Backend/states.php";
+  require "states.php";
   require '../Backend/dbconn.php';
-  require '../Backend/queries.php';
 
   $connection = connect_to_db("GSC");
 
@@ -19,27 +18,6 @@
   if (!isset($_SESSION['cart'])) {
       $_SESSION['cart'] = new ShoppingCart();
   }
-
-// Customer information:
-  mysqli_stmt_execute($selectCustomer);
-  $selectCustomer -> bind_result($customer_id);
-  // Existing customer in database
-  if ($selectCustomer -> fetch() ) {
-    echo "Your customer ID is $customer_id <br />";
-  }
-  else {
-    // Add customer to database
-    mysqli_stmt_execute($insertCustomer);
-    $customer_id = mysqli_stmt_insert_id($insertCustomer);
-    echo "Thanks for being a new customer! Your ID is $customer_id <br />";
-  }
-  // end statements
-  mysqli_stmt_close($selectCustomer);
-  mysqli_stmt_close($insertCustomer);
-
-// Order information
-  mysqli_stmt_execute($insertOrder);
-  $insertOrder-> 
 ?>
 
 <html lang="en">
@@ -191,15 +169,6 @@ session_destroy();
         }
     } //end of loop
 
-    // Set variables
-    $fname = $_POST['firstname'];
-    $lname = $_POST['lastname'];
-    $street = $_POST['street'];
-    $phone = $_POST['phone'];
-    $street = $_POST['street'];
-    $street = $_POST['street'];
-    $street = $_POST['street'];
-
 // Validation methods
   verifylen('scoutname', 3);
   if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -219,6 +188,8 @@ session_destroy();
     $works = false;
   }
   if ($works) {
+    require "toDb.php";
+    
     echo "<script type='text/javascript'>
     $('#form').hide();
     $('#ordersum').hide();
@@ -240,6 +211,9 @@ session_destroy();
   }
 
 ?>
+
+
+
 <p><a href="index4.php">Shop some more!</a></p>
 
 
