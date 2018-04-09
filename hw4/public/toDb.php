@@ -1,9 +1,10 @@
 <?php
-
+session_start();
 require "queries.php";
 // Set database variables
 $fname = $_POST['firstname'];
 $lname = $_POST['lastname'];
+error_log("current error log:" . $lname);
 $street = $_POST['street'];
 $phone = $_POST['phone'];
 $city = $_POST['city'];
@@ -50,7 +51,7 @@ $email = $_POST['email'];
     $price = 5;
     $order_id = mysqli_stmt_insert_id($insertOrder);
     echo "For reference, this is order # $order_id. <br />";
-    
+
     // Loop through cookies to add to db
     foreach($_SESSION["cart"]->order as $variety => $quantity){
       mysqli_stmt_execute($insertCookie);

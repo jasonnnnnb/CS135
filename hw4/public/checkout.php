@@ -152,8 +152,7 @@
 
 <!-- Server side validation -->
 <?php
-session_unset();
-session_destroy();
+
 // echo "working";
   $works = true;
   $items = ["firstname", "lastname", "street", "city", "state", "zipcode",
@@ -189,7 +188,9 @@ session_destroy();
   }
   if ($works) {
     require "toDb.php";
-    
+    session_unset();
+    session_destroy();
+
     echo "<script type='text/javascript'>
     $('#form').hide();
     $('#ordersum').hide();
