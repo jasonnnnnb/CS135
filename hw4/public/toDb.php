@@ -34,12 +34,7 @@ $email = $_POST['email'];
   mysqli_stmt_close($selectCustomer);
   mysqli_stmt_close($insertCustomer);
 
-// Order information
-  mysqli_stmt_execute($insertOrder);
-  $order_id = mysqli_stmt_insert_id($insertOrder);
-  echo "For reference, this is order # $order_id. <br />";
-  mysqli_stmt_close($insertOrder);
-
+  // Girlscout info
   mysqli_stmt_execute($selectGirlscout);
     $selectGirlscout->bind_result($gs_id);
     if(!$selectGirlscout->fetch()){
@@ -50,13 +45,19 @@ $email = $_POST['email'];
     mysqli_stmt_close($insertGirlscout);
     mysqli_stmt_close($selectGirlscout);
 
+  // Order information
+    mysqli_stmt_execute($insertOrder);
+    $price = 5;
+    $order_id = mysqli_stmt_insert_id($insertOrder);
+    echo "For reference, this is order # $order_id. <br />";
+    
     // Loop through cookies to add to db
-
-    foreach($_SESSION["cart"]-> order as $variety => $quantity){
+    foreach($_SESSION["cart"]->order as $variety => $quantity){
       mysqli_stmt_execute($insertCookie);
+      $cookie_id = mysqli_stmt_insert_id($insertCookie);
 }
       mysqli_stmt_close($insertCookie);
-
+      mysqli_stmt_close($insertOrder);
 
 
  ?>

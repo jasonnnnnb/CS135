@@ -29,7 +29,7 @@ $query = "INSERT INTO customer (fname, lname, street, city, state, zipcode, phon
 $insertCustomer = $connection->prepare($query);
 $insertCustomer -> bind_param ("sssssiss", $fname, $lname,
                     $street, $city, $state, $zipcode, $phone, $email);
-
+                    
 // Select customer
 $query = "SELECT id FROM customer WHERE fname=? AND lname=?";
 $selectCustomer = $connection->prepare($query);

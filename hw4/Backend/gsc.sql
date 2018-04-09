@@ -33,12 +33,11 @@ CREATE TABLE orders (
 
 CREATE TABLE cookies (
   order_id INT UNSIGNED NOT NULL,
-  variety VARCHAR(64) NOT NULL,
-  quantity INT SIGNED NOT NULL,
+  variety VARCHAR(64),
+  quantity INT UNSIGNED NOT NULL,
   price INT,
   FOREIGN KEY (order_id) REFERENCES orders(id)
 );
-
 
 -- Running the database:
 -- in MAMP, there should be a mysql executable in Libaray/bin
