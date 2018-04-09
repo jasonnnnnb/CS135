@@ -4,7 +4,6 @@ require "queries.php";
 // Set database variables
 $fname = $_POST['firstname'];
 $lname = $_POST['lastname'];
-error_log("current error log:" . $lname);
 $street = $_POST['street'];
 $phone = $_POST['phone'];
 $city = $_POST['city'];
@@ -29,7 +28,8 @@ $email = $_POST['email'];
     // Add customer to database
     mysqli_stmt_execute($insertCustomer);
     $customer_id = mysqli_stmt_insert_id($insertCustomer);
-    echo "Thanks for being a new customer! You are customer #$customer_id. <br />";
+    echo "Thanks for being a new customer!
+    You are customer #$customer_id. <br />";
   }
   // end statements
   mysqli_stmt_close($selectCustomer);
@@ -43,6 +43,7 @@ $email = $_POST['email'];
       mysqli_stmt_execute($insertGirlscout);
       $gs_id = mysqli_stmt_insert_id($insertGirlscout);
     }
+    // end statements
     mysqli_stmt_close($insertGirlscout);
     mysqli_stmt_close($selectGirlscout);
 
@@ -57,8 +58,8 @@ $email = $_POST['email'];
       mysqli_stmt_execute($insertCookie);
       $cookie_id = mysqli_stmt_insert_id($insertCookie);
 }
+      // end statements
       mysqli_stmt_close($insertCookie);
       mysqli_stmt_close($insertOrder);
-
 
  ?>
